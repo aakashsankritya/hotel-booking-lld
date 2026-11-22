@@ -19,7 +19,7 @@ class OpenApiDocsIT {
     private MockMvcTester mvc;
 
     @Test
-    void apiDocsListTheEndpointsAndTheIdempotencyHeader() {
+    void apiDocsListTheEndpointsAndTheIdempotencyHeader() throws Exception {
         MvcTestResult result = mvc.get().uri("/v3/api-docs").exchange();
         assertThat(result).hasStatusOk();
 
