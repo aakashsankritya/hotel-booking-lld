@@ -83,4 +83,13 @@ class CancellationPolicyResolverTest {
                 .isThrownBy(() -> new CancellationPolicyResolver(map))
                 .withMessageContaining("MODERATE");
     }
+
+    @Test
+    void constructorRejectsANullPolicy() {
+        Map<CancellationPolicyType, CancellationPolicy> map = standardPolicies();
+        map.put(CancellationPolicyType.FLEXIBLE, null);
+
+        org.assertj.core.api.Assertions.assertThatNullPointerException()
+                .isThrownBy(() -> new CancellationPolicyResolver(map));
+    }
 }

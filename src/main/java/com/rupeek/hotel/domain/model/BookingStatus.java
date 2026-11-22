@@ -20,17 +20,4 @@ public enum BookingStatus {
             .allow(PENDING_PAYMENT, CONFIRMED, PAYMENT_FAILED, EXPIRED, CANCELLED)
             .allow(CONFIRMED, CANCELLED)
             .build();
-
-    public boolean canTransitionTo(BookingStatus next) {
-        return TABLE.allows(this, next);
-    }
-
-    public boolean isTerminal() {
-        return TABLE.isTerminal(this);
-    }
-
-    /** True while the booking keeps units of inventory: waiting for payment, or confirmed. */
-    public boolean holdsInventory() {
-        return this == PENDING_PAYMENT || this == CONFIRMED;
-    }
 }

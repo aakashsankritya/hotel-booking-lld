@@ -38,10 +38,6 @@ public record Money(BigDecimal amount, Currency currency) {
         }
     }
 
-    public static Money zero(Currency currency) {
-        return new Money(BigDecimal.ZERO, currency);
-    }
-
     public Money plus(Money other) {
         requireSameCurrency(other);
         return new Money(amount.add(other.amount), currency);

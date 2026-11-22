@@ -72,18 +72,6 @@ class PropertyTest {
     }
 
     @Test
-    void roomTypesForFiltersByCapacity() {
-        RoomType small = room("Small", 2);
-        RoomType medium = room("Medium", 4);
-        RoomType large = room("Large", 6);
-        Property property = property(Set.of(), List.of(small, medium, large));
-
-        assertThat(property.roomTypesFor(new GuestCount(1))).containsExactly(small, medium, large);
-        assertThat(property.roomTypesFor(new GuestCount(4))).containsExactly(medium, large);
-        assertThat(property.roomTypesFor(new GuestCount(7))).isEmpty();
-    }
-
-    @Test
     void unknownRoomTypeThrowsNotFound() {
         Property property = property(Set.of(), List.of(room("Deluxe", 2)));
 

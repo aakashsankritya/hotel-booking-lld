@@ -38,12 +38,6 @@ public record DateRange(LocalDate checkIn, LocalDate checkOut) {
         return checkIn.datesUntil(checkOut).toList();
     }
 
-    /** True if the two ranges share at least one night. Ranges that only touch at a boundary do not overlap. */
-    public boolean overlaps(DateRange other) {
-        Objects.requireNonNull(other, "other must not be null");
-        return checkIn.isBefore(other.checkOut) && other.checkIn.isBefore(checkOut);
-    }
-
     /** True if {@code date} is a night of the stay. */
     public boolean contains(LocalDate date) {
         Objects.requireNonNull(date, "date must not be null");

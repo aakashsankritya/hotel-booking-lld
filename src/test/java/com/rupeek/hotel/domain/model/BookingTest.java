@@ -49,10 +49,7 @@ class BookingTest {
 
         assertThat(booking.status()).isEqualTo(BookingStatus.PENDING_PAYMENT);
         assertThat(booking.createdAt()).isEqualTo(T0);
-        assertThat(booking.updatedAt()).isEqualTo(T0);
         assertThat(booking.holdExpiresAt()).isEqualTo(T0.plus(TTL));
-        assertThat(booking.cancelledAt()).isNull();
-        assertThat(booking.version()).isZero();
     }
 
     @ParameterizedTest
@@ -70,12 +67,10 @@ class BookingTest {
 
         booking.confirm(after(Duration.ofMinutes(5)));
         assertThat(booking.status()).isEqualTo(BookingStatus.CONFIRMED);
-        assertThat(booking.updatedAt()).isEqualTo(T0.plus(Duration.ofMinutes(5)));
 
         BookingStatus previous = booking.cancel(after(Duration.ofHours(1)));
         assertThat(previous).isEqualTo(BookingStatus.CONFIRMED);
         assertThat(booking.status()).isEqualTo(BookingStatus.CANCELLED);
-        assertThat(booking.cancelledAt()).isEqualTo(T0.plus(Duration.ofHours(1)));
     }
 
     @Test
@@ -89,7 +84,6 @@ class BookingTest {
                     assertThat(e.expiredAt()).isEqualTo(T0.plus(TTL));
                 });
         assertThat(booking.status()).isEqualTo(BookingStatus.PENDING_PAYMENT);
-        assertThat(booking.version()).isZero();
     }
 
     @Test
@@ -143,7 +137,7 @@ class BookingTest {
         booking.cancel(CLOCK);
 
         assertThatExceptionOfType(InvalidStateTransitionException.class).isThrownBy(() -> booking.cancel(CLOCK));
-        assertThat(booking.version()).isEqualTo(1);
+        assertThat(booking.status()).isEqualTo(BookingStatus.CANCELLED);
     }
 
     @Test
@@ -162,7 +156,6 @@ class BookingTest {
         assertThatExceptionOfType(InvalidStateTransitionException.class)
                 .isThrownBy(() -> booking.cancel(at("2027-03-10T00:00:00Z")));
         assertThat(booking.status()).isEqualTo(BookingStatus.PENDING_PAYMENT);
-        assertThat(booking.cancelledAt()).isNull();
     }
 
     @Test
@@ -185,25 +178,12 @@ class BookingTest {
     }
 
     @Test
-    void versionIncreasesByOneForEachTransition() {
-        Booking booking = newBooking();
-        assertThat(booking.version()).isZero();
-
-        booking.confirm(CLOCK);
-        assertThat(booking.version()).isEqualTo(1);
-
-        booking.cancel(CLOCK);
-        assertThat(booking.version()).isEqualTo(2);
-    }
-
-    @Test
     void markPaymentFailedMovesPendingToPaymentFailedAndThenItIsTerminal() {
         Booking booking = newBooking();
 
-        booking.markPaymentFailed(CLOCK);
+        booking.markPaymentFailed();
 
         assertThat(booking.status()).isEqualTo(BookingStatus.PAYMENT_FAILED);
-        assertThat(booking.version()).isEqualTo(1);
         assertThatExceptionOfType(InvalidStateTransitionException.class).isThrownBy(() -> booking.confirm(CLOCK));
         assertThatExceptionOfType(InvalidStateTransitionException.class).isThrownBy(() -> booking.cancel(CLOCK));
     }
@@ -215,7 +195,6 @@ class BookingTest {
         assertThatExceptionOfType(InvalidStateTransitionException.class)
                 .isThrownBy(() -> booking.expire(after(TTL.minusSeconds(1))));
         assertThat(booking.status()).isEqualTo(BookingStatus.PENDING_PAYMENT);
-        assertThat(booking.version()).isZero();
     }
 
     @Test
@@ -227,7 +206,6 @@ class BookingTest {
 
         assertThat(atDeadline.status()).isEqualTo(BookingStatus.EXPIRED);
         assertThat(afterDeadline.status()).isEqualTo(BookingStatus.EXPIRED);
-        assertThat(atDeadline.version()).isEqualTo(1);
     }
 
     @Test

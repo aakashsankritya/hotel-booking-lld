@@ -1,6 +1,7 @@
 package com.rupeek.hotel.infrastructure.persistence;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 
 import com.rupeek.hotel.domain.model.Payment;
 import com.rupeek.hotel.domain.value.BookingId;
@@ -71,5 +72,50 @@ class InMemoryPaymentRepositoryTest {
             }
             assertThat(winners).isEqualTo(1);
         }
+    }
+
+    @Test
+    void saveOnAPaymentThatWasNeverSavedThrows() {
+        assertThatIllegalStateException().isThrownBy(() -> repository.save(payment("never-saved")))
+                .withMessageContaining("saveIfAbsent");
+    }
+
+    @Test
+    void saveWorksAfterSaveIfAbsent() {
+        Payment payment = payment("k1");
+        repository.saveIfAbsent(payment);
+        payment.markFailed("declined");
+
+        repository.save(payment);
+
+        assertThat(repository.findByIdempotencyKey(new IdempotencyKey("k1"))).containsSame(payment);
+    }
+
+    @Test
+    void findSucceededByBookingIdIsEmptyWhenThereIsNoPayment() {
+        assertThat(repository.findSucceededByBookingId(BookingId.newId())).isEmpty();
+    }
+
+    @Test
+    void findSucceededByBookingIdIgnoresFailedPayments() {
+        Payment failed = payment("k1");
+        repository.saveIfAbsent(failed);
+        failed.markFailed("declined");
+        repository.save(failed);
+
+        assertThat(repository.findSucceededByBookingId(failed.bookingId())).isEmpty();
+    }
+
+    @Test
+    void findSucceededByBookingIdReturnsTheSucceededPaymentOfThatBookingOnly() {
+        Payment paid = payment("k1");
+        Payment other = payment("k2");
+        repository.saveIfAbsent(paid);
+        repository.saveIfAbsent(other);
+        paid.markSucceeded("gw-1");
+        repository.save(paid);
+
+        assertThat(repository.findSucceededByBookingId(paid.bookingId())).containsSame(paid);
+        assertThat(repository.findSucceededByBookingId(other.bookingId())).isEmpty();
     }
 }

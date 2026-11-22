@@ -1,12 +1,17 @@
 package com.rupeek.hotel.domain.repository;
 
 import com.rupeek.hotel.domain.model.Payment;
+import com.rupeek.hotel.domain.value.BookingId;
 import com.rupeek.hotel.domain.value.IdempotencyKey;
 import java.util.Optional;
 
 public interface PaymentRepository {
 
-    /** Saves a payment that already exists. Use it after a status change. */
+    /**
+     * Saves a payment that {@link #saveIfAbsent} already stored. Use it after a status change.
+     *
+     * @throws IllegalStateException if the payment is new
+     */
     void save(Payment payment);
 
     /**
@@ -18,4 +23,7 @@ public interface PaymentRepository {
     Optional<Payment> saveIfAbsent(Payment payment);
 
     Optional<Payment> findByIdempotencyKey(IdempotencyKey key);
+
+    /** The payment of the booking that took the money, if there is one. */
+    Optional<Payment> findSucceededByBookingId(BookingId bookingId);
 }

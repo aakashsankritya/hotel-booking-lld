@@ -13,7 +13,6 @@ import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.EnumSource;
 import org.junit.jupiter.params.provider.MethodSource;
 
 class BookingStatusTest {
@@ -33,20 +32,8 @@ class BookingStatusTest {
 
     @ParameterizedTest(name = "{0} -> {1} allowed: {2}")
     @MethodSource("everyPair")
-    void canTransitionToMatchesTheTable(BookingStatus from, BookingStatus to, boolean allowed) {
-        assertThat(from.canTransitionTo(to)).isEqualTo(allowed);
-    }
-
-    @ParameterizedTest
-    @EnumSource(BookingStatus.class)
-    void isTerminalWhenNoTransitionIsAllowed(BookingStatus status) {
-        assertThat(status.isTerminal()).isEqualTo(ALLOWED.get(status).isEmpty());
-    }
-
-    @ParameterizedTest
-    @EnumSource(BookingStatus.class)
-    void holdsInventoryOnlyWhilePendingOrConfirmed(BookingStatus status) {
-        assertThat(status.holdsInventory()).isEqualTo(status == PENDING_PAYMENT || status == CONFIRMED);
+    void theTableMatchesTheSpec(BookingStatus from, BookingStatus to, boolean allowed) {
+        assertThat(BookingStatus.TABLE.allows(from, to)).isEqualTo(allowed);
     }
 
     @Test

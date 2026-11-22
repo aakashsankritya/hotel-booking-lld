@@ -1,8 +1,10 @@
 package com.rupeek.hotel.domain.common;
 
 import com.rupeek.hotel.domain.exception.InvalidStateTransitionException;
-
-import java.util.*;
+import java.util.EnumMap;
+import java.util.EnumSet;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * The allowed moves of a state machine, for one status enum. Every status enum keeps one table, so
@@ -28,10 +30,6 @@ public final class TransitionTable<S extends Enum<S>> {
 
     public boolean allows(S from, S to) {
         return allowed.get(from).contains(to);
-    }
-
-    public boolean isTerminal(S state) {
-        return allowed.get(state).isEmpty();
     }
 
     /**
@@ -61,7 +59,9 @@ public final class TransitionTable<S extends Enum<S>> {
         @SafeVarargs
         public final Builder<S> allow(S from, S... to) {
             Set<S> moves = allowed.computeIfAbsent(from, state -> EnumSet.noneOf(type));
-            Collections.addAll(moves, to);
+            for (S next : to) {
+                moves.add(next);
+            }
             return this;
         }
 

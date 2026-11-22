@@ -2,6 +2,7 @@ package com.rupeek.hotel.infrastructure.persistence;
 
 import com.rupeek.hotel.domain.model.Payment;
 import com.rupeek.hotel.domain.repository.PaymentRepository;
+import com.rupeek.hotel.domain.value.BookingId;
 import com.rupeek.hotel.domain.value.IdempotencyKey;
 import com.rupeek.hotel.domain.value.PaymentId;
 import java.util.Map;
@@ -17,6 +18,9 @@ public class InMemoryPaymentRepository implements PaymentRepository {
 
     @Override
     public void save(Payment payment) {
+        if (!byKey.containsKey(payment.idempotencyKey())) {
+            throw new IllegalStateException("use saveIfAbsent for a new payment");
+        }
         store.put(payment.id(), payment);
     }
 
@@ -33,5 +37,12 @@ public class InMemoryPaymentRepository implements PaymentRepository {
     @Override
     public Optional<Payment> findByIdempotencyKey(IdempotencyKey key) {
         return Optional.ofNullable(byKey.get(key));
+    }
+
+    @Override
+    public Optional<Payment> findSucceededByBookingId(BookingId bookingId) {
+        return store.values().stream()
+                .filter(payment -> payment.bookingId().equals(bookingId) && payment.isSuccessful())
+                .findFirst();
     }
 }

@@ -5,7 +5,6 @@ import com.rupeek.hotel.domain.exception.DomainValidationException;
 import com.rupeek.hotel.domain.exception.EntityNotFoundException;
 import com.rupeek.hotel.domain.policy.CancellationPolicyType;
 import com.rupeek.hotel.domain.value.Amenity;
-import com.rupeek.hotel.domain.value.GuestCount;
 import com.rupeek.hotel.domain.value.Location;
 import com.rupeek.hotel.domain.value.OwnerId;
 import com.rupeek.hotel.domain.value.PropertyId;
@@ -90,11 +89,6 @@ public final class Property {
 
     public List<RoomType> roomTypes() {
         return List.copyOf(roomTypes.values());
-    }
-
-    /** Room types that can host the given number of guests. */
-    public List<RoomType> roomTypesFor(GuestCount guests) {
-        return roomTypes.values().stream().filter(roomType -> roomType.canHost(guests)).toList();
     }
 
     public boolean hasAllAmenities(Set<Amenity> required) {

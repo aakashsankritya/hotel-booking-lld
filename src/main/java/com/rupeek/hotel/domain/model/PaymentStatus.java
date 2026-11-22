@@ -19,12 +19,4 @@ public enum PaymentStatus {
             .allow(INITIATED, SUCCEEDED, FAILED)
             .allow(SUCCEEDED, REFUNDED)
             .build();
-
-    public boolean canTransitionTo(PaymentStatus next) {
-        return TABLE.allows(this, next);
-    }
-
-    public boolean isTerminal() {
-        return TABLE.isTerminal(this);
-    }
 }

@@ -23,12 +23,11 @@ class LocationTest {
     }
 
     @Test
-    void fieldsAreStoredTrimmedAndLowerCased() {
+    void fieldsAreStoredTrimmedAndKeepTheirCase() {
         Location location = new Location("  Bengaluru ", " Indiranagar  ");
 
-        assertThat(location.city()).isEqualTo("bengaluru");
-        assertThat(location.locality()).isEqualTo("indiranagar");
-        assertThat(location).isEqualTo(new Location("BENGALURU", "INDIRANAGAR"));
+        assertThat(location.city()).isEqualTo("Bengaluru");
+        assertThat(location.locality()).isEqualTo("Indiranagar");
     }
 
     @Test

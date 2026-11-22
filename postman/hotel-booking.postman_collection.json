@@ -1,0 +1,996 @@
+{
+    "item": [
+        {
+            "name": "owner-controller",
+            "description": "",
+            "item": [
+                {
+                    "id": "ba2d625f-0ab0-44fa-b92b-25d78c9573f3",
+                    "name": "register",
+                    "request": {
+                        "name": "register",
+                        "description": {},
+                        "url": {
+                            "path": [
+                                "owners"
+                            ],
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "query": [],
+                            "variable": []
+                        },
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "*/*"
+                            }
+                        ],
+                        "method": "POST",
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"email\": \"<string>\",\n  \"name\": \"<string>\"\n}",
+                            "options": {
+                                "raw": {
+                                    "headerFamily": "json",
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "auth": null
+                    },
+                    "response": [
+                        {
+                            "id": "40e3b4f8-8d2a-47cf-a1f3-dc4108e3d929",
+                            "name": "OK",
+                            "originalRequest": {
+                                "url": {
+                                    "path": [
+                                        "owners"
+                                    ],
+                                    "host": [
+                                        "{{baseUrl}}"
+                                    ],
+                                    "query": [],
+                                    "variable": []
+                                },
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "*/*"
+                                    }
+                                ],
+                                "method": "POST",
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"email\": \"<string>\",\n  \"name\": \"<string>\"\n}",
+                                    "options": {
+                                        "raw": {
+                                            "headerFamily": "json",
+                                            "language": "json"
+                                        }
+                                    }
+                                }
+                            },
+                            "status": "OK",
+                            "code": 200,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "*/*"
+                                }
+                            ],
+                            "body": "{\n  \"id\": \"<string>\",\n  \"name\": \"<string>\",\n  \"email\": \"<string>\",\n  \"propertyIds\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"multiProperty\": \"<boolean>\"\n}",
+                            "cookie": [],
+                            "_postman_previewlanguage": "text"
+                        }
+                    ],
+                    "event": [],
+                    "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                    }
+                },
+                {
+                    "id": "7fb1e4e9-a43f-4a1f-af87-edcbf10ba996",
+                    "name": "get",
+                    "request": {
+                        "name": "get",
+                        "description": {},
+                        "url": {
+                            "path": [
+                                "owners",
+                                ":id"
+                            ],
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "query": [],
+                            "variable": [
+                                {
+                                    "type": "any",
+                                    "value": "<string>",
+                                    "key": "id",
+                                    "disabled": false,
+                                    "description": {
+                                        "content": "(Required) ",
+                                        "type": "text/plain"
+                                    }
+                                }
+                            ]
+                        },
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "*/*"
+                            }
+                        ],
+                        "method": "GET",
+                        "body": {},
+                        "auth": null
+                    },
+                    "response": [
+                        {
+                            "id": "ea235a03-530f-4892-9b5a-2f0b0bf9630b",
+                            "name": "OK",
+                            "originalRequest": {
+                                "url": {
+                                    "path": [
+                                        "owners",
+                                        ":id"
+                                    ],
+                                    "host": [
+                                        "{{baseUrl}}"
+                                    ],
+                                    "query": [],
+                                    "variable": [
+                                        {
+                                            "disabled": false,
+                                            "description": {
+                                                "content": "(Required) ",
+                                                "type": "text/plain"
+                                            },
+                                            "type": "any",
+                                            "value": "<string>",
+                                            "key": "id"
+                                        }
+                                    ]
+                                },
+                                "header": [
+                                    {
+                                        "key": "Accept",
+                                        "value": "*/*"
+                                    }
+                                ],
+                                "method": "GET",
+                                "body": {}
+                            },
+                            "status": "OK",
+                            "code": 200,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "*/*"
+                                }
+                            ],
+                            "body": "{\n  \"id\": \"<string>\",\n  \"name\": \"<string>\",\n  \"email\": \"<string>\",\n  \"propertyIds\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"multiProperty\": \"<boolean>\"\n}",
+                            "cookie": [],
+                            "_postman_previewlanguage": "text"
+                        }
+                    ],
+                    "event": [],
+                    "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                    }
+                }
+            ]
+        },
+        {
+            "name": "property-controller",
+            "description": "",
+            "item": [
+                {
+                    "id": "876fbddc-24c8-478b-bbe8-99442bac1272",
+                    "name": "onboard",
+                    "request": {
+                        "name": "onboard",
+                        "description": {},
+                        "url": {
+                            "path": [
+                                "owners",
+                                ":ownerId",
+                                "properties"
+                            ],
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "query": [],
+                            "variable": [
+                                {
+                                    "type": "any",
+                                    "value": "<string>",
+                                    "key": "ownerId",
+                                    "disabled": false,
+                                    "description": {
+                                        "content": "(Required) ",
+                                        "type": "text/plain"
+                                    }
+                                }
+                            ]
+                        },
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "*/*"
+                            }
+                        ],
+                        "method": "POST",
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"cancellationPolicy\": \"MODERATE\",\n  \"city\": \"<string>\",\n  \"name\": \"<string>\",\n  \"roomTypes\": [\n    {\n      \"capacity\": \"<integer>\",\n      \"name\": \"<string>\",\n      \"pricePerNight\": {\n        \"amount\": \"<number>\",\n        \"currency\": \"<string>\"\n      },\n      \"units\": \"<integer>\"\n    }\n  ],\n  \"stars\": \"<integer>\",\n  \"locality\": \"<string>\",\n  \"amenities\": [\n    \"WIFI\",\n    \"SPA\"\n  ]\n}",
+                            "options": {
+                                "raw": {
+                                    "headerFamily": "json",
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "auth": null
+                    },
+                    "response": [
+                        {
+                            "id": "7af724fe-55b5-4655-b25f-48e46a159cc5",
+                            "name": "Created",
+                            "originalRequest": {
+                                "url": {
+                                    "path": [
+                                        "owners",
+                                        ":ownerId",
+                                        "properties"
+                                    ],
+                                    "host": [
+                                        "{{baseUrl}}"
+                                    ],
+                                    "query": [],
+                                    "variable": [
+                                        {
+                                            "disabled": false,
+                                            "description": {
+                                                "content": "(Required) ",
+                                                "type": "text/plain"
+                                            },
+                                            "type": "any",
+                                            "value": "<string>",
+                                            "key": "ownerId"
+                                        }
+                                    ]
+                                },
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "*/*"
+                                    }
+                                ],
+                                "method": "POST",
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"cancellationPolicy\": \"MODERATE\",\n  \"city\": \"<string>\",\n  \"name\": \"<string>\",\n  \"roomTypes\": [\n    {\n      \"capacity\": \"<integer>\",\n      \"name\": \"<string>\",\n      \"pricePerNight\": {\n        \"amount\": \"<number>\",\n        \"currency\": \"<string>\"\n      },\n      \"units\": \"<integer>\"\n    }\n  ],\n  \"stars\": \"<integer>\",\n  \"locality\": \"<string>\",\n  \"amenities\": [\n    \"WIFI\",\n    \"SPA\"\n  ]\n}",
+                                    "options": {
+                                        "raw": {
+                                            "headerFamily": "json",
+                                            "language": "json"
+                                        }
+                                    }
+                                }
+                            },
+                            "status": "Created",
+                            "code": 201,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "*/*"
+                                }
+                            ],
+                            "body": "{\n  \"id\": \"<string>\",\n  \"ownerId\": \"<string>\",\n  \"name\": \"<string>\",\n  \"city\": \"<string>\",\n  \"locality\": \"<string>\",\n  \"stars\": \"<integer>\",\n  \"amenities\": [\n    \"SPA\",\n    \"RESTAURANT\"\n  ],\n  \"cancellationPolicy\": \"NON_REFUNDABLE\",\n  \"roomTypes\": [\n    {\n      \"id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"capacity\": \"<integer>\",\n      \"units\": \"<integer>\",\n      \"pricePerNight\": {\n        \"amount\": \"<number>\",\n        \"currency\": \"<string>\"\n      }\n    },\n    {\n      \"id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"capacity\": \"<integer>\",\n      \"units\": \"<integer>\",\n      \"pricePerNight\": {\n        \"amount\": \"<number>\",\n        \"currency\": \"<string>\"\n      }\n    }\n  ]\n}",
+                            "cookie": [],
+                            "_postman_previewlanguage": "text"
+                        }
+                    ],
+                    "event": [],
+                    "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                    }
+                },
+                {
+                    "id": "377be4e3-f9fe-4b0a-9d53-b14e9f06e571",
+                    "name": "search",
+                    "request": {
+                        "name": "search",
+                        "description": {},
+                        "url": {
+                            "path": [
+                                "properties",
+                                "search"
+                            ],
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "query": [
+                                {
+                                    "disabled": false,
+                                    "description": {
+                                        "content": "(Required) ",
+                                        "type": "text/plain"
+                                    },
+                                    "key": "checkIn",
+                                    "value": "<date>"
+                                },
+                                {
+                                    "disabled": false,
+                                    "description": {
+                                        "content": "(Required) ",
+                                        "type": "text/plain"
+                                    },
+                                    "key": "checkOut",
+                                    "value": "<date>"
+                                },
+                                {
+                                    "disabled": false,
+                                    "description": {
+                                        "content": "(Required) ",
+                                        "type": "text/plain"
+                                    },
+                                    "key": "city",
+                                    "value": "<string>"
+                                },
+                                {
+                                    "disabled": false,
+                                    "description": {
+                                        "content": "(Required) ",
+                                        "type": "text/plain"
+                                    },
+                                    "key": "guests",
+                                    "value": "<integer>"
+                                },
+                                {
+                                    "disabled": false,
+                                    "description": {
+                                        "content": "(Required) ",
+                                        "type": "text/plain"
+                                    },
+                                    "key": "locality",
+                                    "value": "<string>"
+                                },
+                                {
+                                    "disabled": false,
+                                    "description": {
+                                        "content": "(Required) ",
+                                        "type": "text/plain"
+                                    },
+                                    "key": "minPrice",
+                                    "value": "<number>"
+                                },
+                                {
+                                    "disabled": false,
+                                    "description": {
+                                        "content": "(Required) ",
+                                        "type": "text/plain"
+                                    },
+                                    "key": "maxPrice",
+                                    "value": "<number>"
+                                },
+                                {
+                                    "disabled": false,
+                                    "description": {
+                                        "content": "(Required) ",
+                                        "type": "text/plain"
+                                    },
+                                    "key": "minStars",
+                                    "value": "<integer>"
+                                },
+                                {
+                                    "disabled": false,
+                                    "description": {
+                                        "content": "(Required) ",
+                                        "type": "text/plain"
+                                    },
+                                    "key": "amenities",
+                                    "value": "PARKING,RESTAURANT"
+                                }
+                            ],
+                            "variable": []
+                        },
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "*/*"
+                            }
+                        ],
+                        "method": "GET",
+                        "body": {},
+                        "auth": null
+                    },
+                    "response": [
+                        {
+                            "id": "6b54724a-652c-4802-a4b9-7a618fff150f",
+                            "name": "OK",
+                            "originalRequest": {
+                                "url": {
+                                    "path": [
+                                        "properties",
+                                        "search"
+                                    ],
+                                    "host": [
+                                        "{{baseUrl}}"
+                                    ],
+                                    "query": [
+                                        {
+                                            "disabled": false,
+                                            "description": {
+                                                "content": "(Required) ",
+                                                "type": "text/plain"
+                                            },
+                                            "key": "checkIn",
+                                            "value": "<date>"
+                                        },
+                                        {
+                                            "disabled": false,
+                                            "description": {
+                                                "content": "(Required) ",
+                                                "type": "text/plain"
+                                            },
+                                            "key": "checkOut",
+                                            "value": "<date>"
+                                        },
+                                        {
+                                            "disabled": false,
+                                            "description": {
+                                                "content": "(Required) ",
+                                                "type": "text/plain"
+                                            },
+                                            "key": "city",
+                                            "value": "<string>"
+                                        },
+                                        {
+                                            "disabled": false,
+                                            "description": {
+                                                "content": "(Required) ",
+                                                "type": "text/plain"
+                                            },
+                                            "key": "guests",
+                                            "value": "<integer>"
+                                        },
+                                        {
+                                            "disabled": false,
+                                            "description": {
+                                                "content": "(Required) ",
+                                                "type": "text/plain"
+                                            },
+                                            "key": "locality",
+                                            "value": "<string>"
+                                        },
+                                        {
+                                            "disabled": false,
+                                            "description": {
+                                                "content": "(Required) ",
+                                                "type": "text/plain"
+                                            },
+                                            "key": "minPrice",
+                                            "value": "<number>"
+                                        },
+                                        {
+                                            "disabled": false,
+                                            "description": {
+                                                "content": "(Required) ",
+                                                "type": "text/plain"
+                                            },
+                                            "key": "maxPrice",
+                                            "value": "<number>"
+                                        },
+                                        {
+                                            "disabled": false,
+                                            "description": {
+                                                "content": "(Required) ",
+                                                "type": "text/plain"
+                                            },
+                                            "key": "minStars",
+                                            "value": "<integer>"
+                                        },
+                                        {
+                                            "disabled": false,
+                                            "description": {
+                                                "content": "(Required) ",
+                                                "type": "text/plain"
+                                            },
+                                            "key": "amenities",
+                                            "value": "PARKING,RESTAURANT"
+                                        }
+                                    ],
+                                    "variable": []
+                                },
+                                "header": [
+                                    {
+                                        "key": "Accept",
+                                        "value": "*/*"
+                                    }
+                                ],
+                                "method": "GET",
+                                "body": {}
+                            },
+                            "status": "OK",
+                            "code": 200,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "*/*"
+                                }
+                            ],
+                            "body": "[\n  {\n    \"propertyId\": \"<string>\",\n    \"name\": \"<string>\",\n    \"city\": \"<string>\",\n    \"locality\": \"<string>\",\n    \"stars\": \"<integer>\",\n    \"amenities\": [\n      \"PARKING\",\n      \"BREAKFAST\"\n    ],\n    \"offers\": [\n      {\n        \"roomTypeId\": \"<string>\",\n        \"name\": \"<string>\",\n        \"capacity\": \"<integer>\",\n        \"pricePerNight\": {\n          \"amount\": \"<number>\",\n          \"currency\": \"<string>\"\n        },\n        \"totalPrice\": {\n          \"amount\": \"<number>\",\n          \"currency\": \"<string>\"\n        }\n      },\n      {\n        \"roomTypeId\": \"<string>\",\n        \"name\": \"<string>\",\n        \"capacity\": \"<integer>\",\n        \"pricePerNight\": {\n          \"amount\": \"<number>\",\n          \"currency\": \"<string>\"\n        },\n        \"totalPrice\": {\n          \"amount\": \"<number>\",\n          \"currency\": \"<string>\"\n        }\n      }\n    ]\n  },\n  {\n    \"propertyId\": \"<string>\",\n    \"name\": \"<string>\",\n    \"city\": \"<string>\",\n    \"locality\": \"<string>\",\n    \"stars\": \"<integer>\",\n    \"amenities\": [\n      \"WIFI\",\n      \"PARKING\"\n    ],\n    \"offers\": [\n      {\n        \"roomTypeId\": \"<string>\",\n        \"name\": \"<string>\",\n        \"capacity\": \"<integer>\",\n        \"pricePerNight\": {\n          \"amount\": \"<number>\",\n          \"currency\": \"<string>\"\n        },\n        \"totalPrice\": {\n          \"amount\": \"<number>\",\n          \"currency\": \"<string>\"\n        }\n      },\n      {\n        \"roomTypeId\": \"<string>\",\n        \"name\": \"<string>\",\n        \"capacity\": \"<integer>\",\n        \"pricePerNight\": {\n          \"amount\": \"<number>\",\n          \"currency\": \"<string>\"\n        },\n        \"totalPrice\": {\n          \"amount\": \"<number>\",\n          \"currency\": \"<string>\"\n        }\n      }\n    ]\n  }\n]",
+                            "cookie": [],
+                            "_postman_previewlanguage": "text"
+                        }
+                    ],
+                    "event": [],
+                    "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                    }
+                }
+            ]
+        },
+        {
+            "name": "booking-controller",
+            "description": "",
+            "item": [
+                {
+                    "id": "a7c23cb5-c466-42ad-89af-c0f756c1f28b",
+                    "name": "book",
+                    "request": {
+                        "name": "book",
+                        "description": {},
+                        "url": {
+                            "path": [
+                                "bookings"
+                            ],
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "query": [],
+                            "variable": []
+                        },
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "*/*"
+                            }
+                        ],
+                        "method": "POST",
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"checkIn\": \"<date>\",\n  \"checkOut\": \"<date>\",\n  \"guestEmail\": \"<string>\",\n  \"guestName\": \"<string>\",\n  \"guests\": \"<integer>\",\n  \"propertyId\": \"<string>\",\n  \"roomTypeId\": \"<string>\"\n}",
+                            "options": {
+                                "raw": {
+                                    "headerFamily": "json",
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "auth": null
+                    },
+                    "response": [
+                        {
+                            "id": "138be5d7-b190-4ddd-ad1e-506e37834d53",
+                            "name": "OK",
+                            "originalRequest": {
+                                "url": {
+                                    "path": [
+                                        "bookings"
+                                    ],
+                                    "host": [
+                                        "{{baseUrl}}"
+                                    ],
+                                    "query": [],
+                                    "variable": []
+                                },
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "*/*"
+                                    }
+                                ],
+                                "method": "POST",
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"checkIn\": \"<date>\",\n  \"checkOut\": \"<date>\",\n  \"guestEmail\": \"<string>\",\n  \"guestName\": \"<string>\",\n  \"guests\": \"<integer>\",\n  \"propertyId\": \"<string>\",\n  \"roomTypeId\": \"<string>\"\n}",
+                                    "options": {
+                                        "raw": {
+                                            "headerFamily": "json",
+                                            "language": "json"
+                                        }
+                                    }
+                                }
+                            },
+                            "status": "OK",
+                            "code": 200,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "*/*"
+                                }
+                            ],
+                            "body": "{\n  \"id\": \"<string>\",\n  \"status\": \"CONFIRMED\",\n  \"propertyId\": \"<string>\",\n  \"roomTypeId\": \"<string>\",\n  \"guestName\": \"<string>\",\n  \"checkIn\": \"<date>\",\n  \"checkOut\": \"<date>\",\n  \"nights\": \"<integer>\",\n  \"guests\": \"<integer>\",\n  \"amount\": {\n    \"amount\": \"<number>\",\n    \"currency\": \"<string>\"\n  },\n  \"holdExpiresAt\": \"<dateTime>\",\n  \"createdAt\": \"<dateTime>\"\n}",
+                            "cookie": [],
+                            "_postman_previewlanguage": "text"
+                        }
+                    ],
+                    "event": [],
+                    "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                    }
+                },
+                {
+                    "id": "5c55bee2-d1e7-4735-badd-defbd7f93e24",
+                    "name": "pay",
+                    "request": {
+                        "name": "pay",
+                        "description": {},
+                        "url": {
+                            "path": [
+                                "bookings",
+                                ":id",
+                                "payments"
+                            ],
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "query": [],
+                            "variable": [
+                                {
+                                    "type": "any",
+                                    "value": "<string>",
+                                    "key": "id",
+                                    "disabled": false,
+                                    "description": {
+                                        "content": "(Required) ",
+                                        "type": "text/plain"
+                                    }
+                                }
+                            ]
+                        },
+                        "header": [
+                            {
+                                "disabled": false,
+                                "description": {
+                                    "content": "(Required) ",
+                                    "type": "text/plain"
+                                },
+                                "key": "Idempotency-Key",
+                                "value": "<string>"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "*/*"
+                            }
+                        ],
+                        "method": "POST",
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"method\": \"UPI\",\n  \"card\": {\n    \"expiry\": \"<string>\",\n    \"holderName\": \"<string>\",\n    \"last4\": \"<string>\"\n  },\n  \"upi\": {\n    \"vpa\": \"<string>\"\n  },\n  \"wallet\": {\n    \"provider\": \"<string>\",\n    \"walletId\": \"<string>\"\n  }\n}",
+                            "options": {
+                                "raw": {
+                                    "headerFamily": "json",
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "auth": null
+                    },
+                    "response": [
+                        {
+                            "id": "2732397e-d4cd-484c-b0b5-e50457d64f36",
+                            "name": "OK",
+                            "originalRequest": {
+                                "url": {
+                                    "path": [
+                                        "bookings",
+                                        ":id",
+                                        "payments"
+                                    ],
+                                    "host": [
+                                        "{{baseUrl}}"
+                                    ],
+                                    "query": [],
+                                    "variable": [
+                                        {
+                                            "disabled": false,
+                                            "description": {
+                                                "content": "(Required) ",
+                                                "type": "text/plain"
+                                            },
+                                            "type": "any",
+                                            "value": "<string>",
+                                            "key": "id"
+                                        }
+                                    ]
+                                },
+                                "header": [
+                                    {
+                                        "disabled": false,
+                                        "description": {
+                                            "content": "(Required) ",
+                                            "type": "text/plain"
+                                        },
+                                        "key": "Idempotency-Key",
+                                        "value": "<string>"
+                                    },
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "*/*"
+                                    }
+                                ],
+                                "method": "POST",
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"method\": \"UPI\",\n  \"card\": {\n    \"expiry\": \"<string>\",\n    \"holderName\": \"<string>\",\n    \"last4\": \"<string>\"\n  },\n  \"upi\": {\n    \"vpa\": \"<string>\"\n  },\n  \"wallet\": {\n    \"provider\": \"<string>\",\n    \"walletId\": \"<string>\"\n  }\n}",
+                                    "options": {
+                                        "raw": {
+                                            "headerFamily": "json",
+                                            "language": "json"
+                                        }
+                                    }
+                                }
+                            },
+                            "status": "OK",
+                            "code": 200,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "*/*"
+                                }
+                            ],
+                            "body": "{\n  \"paymentId\": \"<string>\",\n  \"bookingId\": \"<string>\",\n  \"method\": \"CARD\",\n  \"amount\": {\n    \"amount\": \"<number>\",\n    \"currency\": \"<string>\"\n  },\n  \"status\": \"REFUNDED\",\n  \"failureReason\": \"<string>\",\n  \"bookingStatus\": \"CANCELLED\",\n  \"createdAt\": \"<dateTime>\"\n}",
+                            "cookie": [],
+                            "_postman_previewlanguage": "text"
+                        }
+                    ],
+                    "event": [],
+                    "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                    }
+                },
+                {
+                    "id": "7f8b17fb-acb3-4adc-96ca-187ac81d4f58",
+                    "name": "cancel",
+                    "request": {
+                        "name": "cancel",
+                        "description": {},
+                        "url": {
+                            "path": [
+                                "bookings",
+                                ":id",
+                                "cancel"
+                            ],
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "query": [],
+                            "variable": [
+                                {
+                                    "type": "any",
+                                    "value": "<string>",
+                                    "key": "id",
+                                    "disabled": false,
+                                    "description": {
+                                        "content": "(Required) ",
+                                        "type": "text/plain"
+                                    }
+                                }
+                            ]
+                        },
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "*/*"
+                            }
+                        ],
+                        "method": "POST",
+                        "body": {},
+                        "auth": null
+                    },
+                    "response": [
+                        {
+                            "id": "2c44398e-d447-4916-930d-611d21a1cba1",
+                            "name": "OK",
+                            "originalRequest": {
+                                "url": {
+                                    "path": [
+                                        "bookings",
+                                        ":id",
+                                        "cancel"
+                                    ],
+                                    "host": [
+                                        "{{baseUrl}}"
+                                    ],
+                                    "query": [],
+                                    "variable": [
+                                        {
+                                            "disabled": false,
+                                            "description": {
+                                                "content": "(Required) ",
+                                                "type": "text/plain"
+                                            },
+                                            "type": "any",
+                                            "value": "<string>",
+                                            "key": "id"
+                                        }
+                                    ]
+                                },
+                                "header": [
+                                    {
+                                        "key": "Accept",
+                                        "value": "*/*"
+                                    }
+                                ],
+                                "method": "POST",
+                                "body": {}
+                            },
+                            "status": "OK",
+                            "code": 200,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "*/*"
+                                }
+                            ],
+                            "body": "{\n  \"booking\": {\n    \"id\": \"<string>\",\n    \"status\": \"PAYMENT_FAILED\",\n    \"propertyId\": \"<string>\",\n    \"roomTypeId\": \"<string>\",\n    \"guestName\": \"<string>\",\n    \"checkIn\": \"<date>\",\n    \"checkOut\": \"<date>\",\n    \"nights\": \"<integer>\",\n    \"guests\": \"<integer>\",\n    \"amount\": {\n      \"amount\": \"<number>\",\n      \"currency\": \"<string>\"\n    },\n    \"holdExpiresAt\": \"<dateTime>\",\n    \"createdAt\": \"<dateTime>\"\n  },\n  \"refund\": {\n    \"status\": \"<string>\",\n    \"amount\": {\n      \"amount\": \"<number>\",\n      \"currency\": \"<string>\"\n    },\n    \"cancellationFee\": {\n      \"amount\": \"<number>\",\n      \"currency\": \"<string>\"\n    },\n    \"reason\": \"<string>\",\n    \"failureReason\": \"<string>\"\n  }\n}",
+                            "cookie": [],
+                            "_postman_previewlanguage": "text"
+                        }
+                    ],
+                    "event": [],
+                    "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                    }
+                },
+                {
+                    "id": "2ba973fe-bee8-4ff5-afdb-3456bcd41187",
+                    "name": "get 1",
+                    "request": {
+                        "name": "get 1",
+                        "description": {},
+                        "url": {
+                            "path": [
+                                "bookings",
+                                ":id"
+                            ],
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "query": [],
+                            "variable": [
+                                {
+                                    "type": "any",
+                                    "value": "<string>",
+                                    "key": "id",
+                                    "disabled": false,
+                                    "description": {
+                                        "content": "(Required) ",
+                                        "type": "text/plain"
+                                    }
+                                }
+                            ]
+                        },
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "*/*"
+                            }
+                        ],
+                        "method": "GET",
+                        "body": {},
+                        "auth": null
+                    },
+                    "response": [
+                        {
+                            "id": "439303c7-e01a-4cb1-8e7e-596c2e81aef8",
+                            "name": "OK",
+                            "originalRequest": {
+                                "url": {
+                                    "path": [
+                                        "bookings",
+                                        ":id"
+                                    ],
+                                    "host": [
+                                        "{{baseUrl}}"
+                                    ],
+                                    "query": [],
+                                    "variable": [
+                                        {
+                                            "disabled": false,
+                                            "description": {
+                                                "content": "(Required) ",
+                                                "type": "text/plain"
+                                            },
+                                            "type": "any",
+                                            "value": "<string>",
+                                            "key": "id"
+                                        }
+                                    ]
+                                },
+                                "header": [
+                                    {
+                                        "key": "Accept",
+                                        "value": "*/*"
+                                    }
+                                ],
+                                "method": "GET",
+                                "body": {}
+                            },
+                            "status": "OK",
+                            "code": 200,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "*/*"
+                                }
+                            ],
+                            "body": "{\n  \"id\": \"<string>\",\n  \"status\": \"CONFIRMED\",\n  \"propertyId\": \"<string>\",\n  \"roomTypeId\": \"<string>\",\n  \"guestName\": \"<string>\",\n  \"checkIn\": \"<date>\",\n  \"checkOut\": \"<date>\",\n  \"nights\": \"<integer>\",\n  \"guests\": \"<integer>\",\n  \"amount\": {\n    \"amount\": \"<number>\",\n    \"currency\": \"<string>\"\n  },\n  \"holdExpiresAt\": \"<dateTime>\",\n  \"createdAt\": \"<dateTime>\"\n}",
+                            "cookie": [],
+                            "_postman_previewlanguage": "text"
+                        }
+                    ],
+                    "event": [],
+                    "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                    }
+                }
+            ]
+        }
+    ],
+    "event": [],
+    "variable": [
+        {
+            "key": "baseUrl",
+            "value": "http://localhost:8080"
+        }
+    ],
+    "info": {
+        "_postman_id": "b97b679c-dc5d-4e39-b89d-fc418c99b455",
+        "name": "Hotel Booking API",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+        "description": {
+            "content": "Property onboarding, search, booking with a 10-minute hold, payment and cancellation.",
+            "type": "text/plain"
+        }
+    }
+}

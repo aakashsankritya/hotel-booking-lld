@@ -3,6 +3,7 @@ package com.rupeek.hotel.domain.policy;
 import java.util.EnumMap;
 import java.util.EnumSet;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -15,6 +16,7 @@ public final class CancellationPolicyResolver {
 
     /** @throws IllegalArgumentException if a {@link CancellationPolicyType} has no policy in the map */
     public CancellationPolicyResolver(Map<CancellationPolicyType, CancellationPolicy> policies) {
+        policies.values().forEach(Objects::requireNonNull);
         Set<CancellationPolicyType> missing = EnumSet.allOf(CancellationPolicyType.class);
         missing.removeAll(policies.keySet());
         if (!missing.isEmpty()) {

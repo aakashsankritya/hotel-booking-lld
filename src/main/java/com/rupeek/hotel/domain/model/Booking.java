@@ -22,8 +22,7 @@ import java.util.Objects;
  * A guest's booking of one room type for a stay. Aggregate root.
  *
  * <p>The booking starts as {@code PENDING_PAYMENT} with a hold that ends at {@code holdExpiresAt}.
- * Every state change first passes the {@link BookingStatus} transition table, then
- * {@link #transitionTo} updates {@code status}, {@code updatedAt} and {@code version}.
+ * Every state change passes the {@link BookingStatus} transition table first.
  *
  * <p>Time comes from the {@link Clock} passed to each method. The clock zone decides which calendar
  * day "today" is for the check-in rule in {@link #cancel(Clock)}. Configure the app clock with the
@@ -45,13 +44,9 @@ public final class Booking {
     private final Instant createdAt;
     private final Instant holdExpiresAt;
     private BookingStatus status;
-    private Instant updatedAt;
-    private Instant cancelledAt;
-    /** Placeholder for optimistic locking. It is used when a real database replaces the in-memory repositories. */
-    private long version;
 
     private Booking(BookingId id, PropertyId propertyId, RoomTypeId roomTypeId, GuestDetails guest, DateRange stay,
-            GuestCount guests, Money amount, Instant now, Instant holdExpiresAt) {
+            GuestCount guests, Money amount, Instant createdAt, Instant holdExpiresAt) {
         this.id = id;
         this.propertyId = propertyId;
         this.roomTypeId = roomTypeId;
@@ -59,8 +54,7 @@ public final class Booking {
         this.stay = stay;
         this.guests = guests;
         this.amount = amount;
-        this.createdAt = now;
-        this.updatedAt = now;
+        this.createdAt = createdAt;
         this.holdExpiresAt = holdExpiresAt;
         this.status = BookingStatus.PENDING_PAYMENT;
     }
@@ -96,12 +90,12 @@ public final class Booking {
         if (isHoldExpired(now)) { // after the state check, so a confirmed booking is not reported as "expired"
             throw new BookingHoldExpiredException(id, holdExpiresAt);
         }
-        transitionTo(next, now);
+        status = next;
     }
 
     /** {@code PENDING_PAYMENT} → {@code PAYMENT_FAILED}. */
-    public void markPaymentFailed(Clock clock) {
-        transitionTo(TABLE.requireTransition(ENTITY, id, status, BookingStatus.PAYMENT_FAILED), clock.instant());
+    public void markPaymentFailed() {
+        status = TABLE.requireTransition(ENTITY, id, status, BookingStatus.PAYMENT_FAILED);
     }
 
     /**
@@ -116,7 +110,7 @@ public final class Booking {
             throw new InvalidStateTransitionException(ENTITY, id, status, next,
                     "hold is valid until " + holdExpiresAt);
         }
-        transitionTo(next, now);
+        status = next;
     }
 
     /**
@@ -135,21 +129,13 @@ public final class Booking {
                     "check-in " + stay.checkIn() + " is not after today " + today);
         }
         BookingStatus previous = status;
-        transitionTo(next, now);
-        cancelledAt = now;
+        status = next;
         return previous;
     }
 
     /** True if the hold ended: {@code now >= holdExpiresAt}. */
     public boolean isHoldExpired(Instant now) {
         return !now.isBefore(holdExpiresAt);
-    }
-
-    /** Applies a move that {@code TABLE.requireTransition} already approved. */
-    private void transitionTo(BookingStatus next, Instant now) {
-        status = next;
-        updatedAt = now;
-        version++;
     }
 
     public BookingId id() {
@@ -188,22 +174,8 @@ public final class Booking {
         return createdAt;
     }
 
-    public Instant updatedAt() {
-        return updatedAt;
-    }
-
     public Instant holdExpiresAt() {
         return holdExpiresAt;
-    }
-
-    /** Null until the booking is cancelled. */
-    public Instant cancelledAt() {
-        return cancelledAt;
-    }
-
-    /** Starts at 0. Each state change adds 1. */
-    public long version() {
-        return version;
     }
 
     @Override

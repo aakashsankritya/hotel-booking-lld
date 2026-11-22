@@ -21,10 +21,20 @@ repositories {
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-webmvc'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:3.2.0'
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.boot:spring-boot-starter-webmvc-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+// Main code must compile without a single lint warning. Test code is linted but not fatal.
+tasks.named('compileJava') {
+    options.compilerArgs += ['-Xlint:all', '-Werror']
+}
+
+tasks.named('compileTestJava') {
+    options.compilerArgs += ['-Xlint:all']
 }
 
 tasks.named('test') {

@@ -27,9 +27,9 @@ class TransitionTableTest {
 
     @Test
     void aStateThatWasNeverConfiguredIsTerminal() {
-        assertThat(table.isTerminal(Light.BROKEN)).isTrue();
-        assertThat(table.allows(Light.BROKEN, Light.RED)).isFalse();
-        assertThat(table.isTerminal(Light.RED)).isFalse();
+        for (Light next : Light.values()) {
+            assertThat(table.allows(Light.BROKEN, next)).isFalse();
+        }
     }
 
     @Test

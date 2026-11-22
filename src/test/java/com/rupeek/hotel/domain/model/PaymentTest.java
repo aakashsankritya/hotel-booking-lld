@@ -11,7 +11,6 @@ import com.rupeek.hotel.domain.value.Money;
 import com.rupeek.hotel.domain.value.PaymentMethodType;
 import com.rupeek.hotel.domain.value.UpiDetails;
 import java.time.Clock;
-import java.time.Duration;
 import java.time.Instant;
 import java.time.ZoneOffset;
 import org.junit.jupiter.api.Test;
@@ -41,7 +40,7 @@ class PaymentTest {
     @Test
     void zeroAmountIsRejected() {
         assertThatExceptionOfType(DomainValidationException.class).isThrownBy(() -> Payment.initiate(
-                BookingId.newId(), Money.zero(AMOUNT.currency()), new UpiDetails("asha@okbank"),
+                BookingId.newId(), Money.of("0", "INR"), new UpiDetails("asha@okbank"),
                 new IdempotencyKey("key-0"), CLOCK));
     }
 
@@ -54,24 +53,22 @@ class PaymentTest {
     void successThenRefund() {
         Payment payment = newPayment();
 
-        payment.markSucceeded("gw-123", CLOCK);
+        payment.markSucceeded("gw-123");
         assertThat(payment.status()).isEqualTo(PaymentStatus.SUCCEEDED);
         assertThat(payment.gatewayReference()).isEqualTo("gw-123");
         assertThat(payment.isSuccessful()).isTrue();
 
-        Clock later = Clock.offset(CLOCK, Duration.ofMinutes(10));
-        payment.recordRefund(Money.of("4500", "INR"), later);
+        payment.recordRefund(Money.of("4500", "INR"));
         assertThat(payment.status()).isEqualTo(PaymentStatus.REFUNDED);
-        assertThat(payment.updatedAt()).isEqualTo(T0.plus(Duration.ofMinutes(10)));
         assertThat(payment.isSuccessful()).isFalse();
     }
 
     @Test
     void refundOfTheFullAmountIsAllowed() {
         Payment payment = newPayment();
-        payment.markSucceeded("gw-123", CLOCK);
+        payment.markSucceeded("gw-123");
 
-        payment.recordRefund(AMOUNT, CLOCK);
+        payment.recordRefund(AMOUNT);
 
         assertThat(payment.status()).isEqualTo(PaymentStatus.REFUNDED);
     }
@@ -79,29 +76,29 @@ class PaymentTest {
     @Test
     void refundAboveTheAmountThrowsAndChangesNothing() {
         Payment payment = newPayment();
-        payment.markSucceeded("gw-123", CLOCK);
+        payment.markSucceeded("gw-123");
 
         assertThatExceptionOfType(DomainValidationException.class)
-                .isThrownBy(() -> payment.recordRefund(Money.of("6000.01", "INR"), CLOCK));
+                .isThrownBy(() -> payment.recordRefund(Money.of("6000.01", "INR")));
         assertThat(payment.status()).isEqualTo(PaymentStatus.SUCCEEDED);
     }
 
     @Test
     void refundInAnotherCurrencyThrows() {
         Payment payment = newPayment();
-        payment.markSucceeded("gw-123", CLOCK);
+        payment.markSucceeded("gw-123");
 
         assertThatExceptionOfType(DomainValidationException.class)
-                .isThrownBy(() -> payment.recordRefund(Money.of("1", "USD"), CLOCK));
+                .isThrownBy(() -> payment.recordRefund(Money.of("1", "USD")));
     }
 
     @Test
     void zeroRefundThrows() {
         Payment payment = newPayment();
-        payment.markSucceeded("gw-123", CLOCK);
+        payment.markSucceeded("gw-123");
 
         assertThatExceptionOfType(DomainValidationException.class)
-                .isThrownBy(() -> payment.recordRefund(Money.zero(AMOUNT.currency()), CLOCK));
+                .isThrownBy(() -> payment.recordRefund(Money.of("0", "INR")));
     }
 
     @Test
@@ -109,26 +106,26 @@ class PaymentTest {
         Payment payment = newPayment();
 
         assertThatExceptionOfType(InvalidStateTransitionException.class)
-                .isThrownBy(() -> payment.recordRefund(Money.of("10", "INR"), CLOCK));
+                .isThrownBy(() -> payment.recordRefund(Money.of("10", "INR")));
     }
 
     @Test
     void refundOnARefundedPaymentThrows() {
         Payment payment = newPayment();
-        payment.markSucceeded("gw-123", CLOCK);
-        payment.recordRefund(Money.of("1000", "INR"), CLOCK);
+        payment.markSucceeded("gw-123");
+        payment.recordRefund(Money.of("1000", "INR"));
 
         assertThatExceptionOfType(InvalidStateTransitionException.class)
-                .isThrownBy(() -> payment.recordRefund(Money.of("1000", "INR"), CLOCK));
+                .isThrownBy(() -> payment.recordRefund(Money.of("1000", "INR")));
     }
 
     @Test
     void markSucceededTwiceThrows() {
         Payment payment = newPayment();
-        payment.markSucceeded("gw-123", CLOCK);
+        payment.markSucceeded("gw-123");
 
         assertThatExceptionOfType(InvalidStateTransitionException.class)
-                .isThrownBy(() -> payment.markSucceeded("gw-456", CLOCK));
+                .isThrownBy(() -> payment.markSucceeded("gw-456"));
         assertThat(payment.gatewayReference()).isEqualTo("gw-123");
     }
 
@@ -136,20 +133,20 @@ class PaymentTest {
     void markFailedRecordsTheReasonAndIsTerminal() {
         Payment payment = newPayment();
 
-        payment.markFailed("insufficient funds", CLOCK);
+        payment.markFailed("insufficient funds");
 
         assertThat(payment.status()).isEqualTo(PaymentStatus.FAILED);
         assertThat(payment.failureReason()).isEqualTo("insufficient funds");
         assertThatExceptionOfType(InvalidStateTransitionException.class)
-                .isThrownBy(() -> payment.markSucceeded("gw-1", CLOCK));
+                .isThrownBy(() -> payment.markSucceeded("gw-1"));
     }
 
     @Test
     void blankGatewayReferenceOrReasonIsRejected() {
         Payment payment = newPayment();
 
-        assertThatExceptionOfType(DomainValidationException.class).isThrownBy(() -> payment.markSucceeded(" ", CLOCK));
-        assertThatExceptionOfType(DomainValidationException.class).isThrownBy(() -> payment.markFailed(null, CLOCK));
+        assertThatExceptionOfType(DomainValidationException.class).isThrownBy(() -> payment.markSucceeded(" "));
+        assertThatExceptionOfType(DomainValidationException.class).isThrownBy(() -> payment.markFailed(null));
         assertThat(payment.status()).isEqualTo(PaymentStatus.INITIATED);
     }
 

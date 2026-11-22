@@ -22,8 +22,7 @@ class IdsTest {
                 id("PropertyId", PropertyId::of, PropertyId::newId),
                 id("RoomTypeId", RoomTypeId::of, RoomTypeId::newId),
                 id("BookingId", BookingId::of, BookingId::newId),
-                id("PaymentId", PaymentId::of, PaymentId::newId),
-                id("RefundId", RefundId::of, RefundId::newId));
+                id("PaymentId", PaymentId::of, PaymentId::newId));
     }
 
     private static Arguments id(String name, Function<String, Object> of, Supplier<Object> newId) {

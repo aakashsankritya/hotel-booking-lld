@@ -33,17 +33,15 @@ public final class Payment {
     private PaymentStatus status;
     private String gatewayReference;
     private String failureReason;
-    private Instant updatedAt;
 
     private Payment(PaymentId id, BookingId bookingId, Money amount, PaymentInstrument instrument,
-            IdempotencyKey idempotencyKey, Instant now) {
+            IdempotencyKey idempotencyKey, Instant createdAt) {
         this.id = id;
         this.bookingId = bookingId;
         this.amount = amount;
         this.instrument = instrument;
         this.idempotencyKey = idempotencyKey;
-        this.createdAt = now;
-        this.updatedAt = now;
+        this.createdAt = createdAt;
         this.status = PaymentStatus.INITIATED;
     }
 
@@ -66,16 +64,16 @@ public final class Payment {
     }
 
     /** {@code INITIATED} → {@code SUCCEEDED}. */
-    public void markSucceeded(String gatewayRef, Clock clock) {
+    public void markSucceeded(String gatewayRef) {
         String reference = Validations.requireNotBlank(gatewayRef, "gatewayRef");
-        transitionTo(PaymentStatus.SUCCEEDED, clock.instant());
+        status = TABLE.requireTransition(ENTITY, id, status, PaymentStatus.SUCCEEDED);
         gatewayReference = reference;
     }
 
     /** {@code INITIATED} → {@code FAILED}. */
-    public void markFailed(String reason, Clock clock) {
+    public void markFailed(String reason) {
         String cleanReason = Validations.requireNotBlank(reason, "reason");
-        transitionTo(PaymentStatus.FAILED, clock.instant());
+        status = TABLE.requireTransition(ENTITY, id, status, PaymentStatus.FAILED);
         failureReason = cleanReason;
     }
 
@@ -83,7 +81,7 @@ public final class Payment {
      * {@code SUCCEEDED} → {@code REFUNDED}. The refund is greater than zero and not more than the
      * payment amount. It may be a part of the amount, but there is only one refund per payment.
      */
-    public void recordRefund(Money refund, Clock clock) {
+    public void recordRefund(Money refund) {
         Objects.requireNonNull(refund, "refund must not be null");
         if (refund.isZero()) {
             throw new DomainValidationException("refund must be greater than zero");
@@ -91,17 +89,12 @@ public final class Payment {
         if (refund.isGreaterThan(amount)) {
             throw new DomainValidationException("refund " + refund + " is more than the payment amount " + amount);
         }
-        transitionTo(PaymentStatus.REFUNDED, clock.instant());
+        status = TABLE.requireTransition(ENTITY, id, status, PaymentStatus.REFUNDED);
     }
 
     /** True while the money is captured and not refunded: status is {@code SUCCEEDED}. */
     public boolean isSuccessful() {
         return status == PaymentStatus.SUCCEEDED;
-    }
-
-    private void transitionTo(PaymentStatus next, Instant now) {
-        status = TABLE.requireTransition(ENTITY, id, status, next);
-        updatedAt = now;
     }
 
     public PaymentId id() {
@@ -114,10 +107,6 @@ public final class Payment {
 
     public Money amount() {
         return amount;
-    }
-
-    public PaymentInstrument instrument() {
-        return instrument;
     }
 
     public IdempotencyKey idempotencyKey() {
@@ -140,10 +129,6 @@ public final class Payment {
 
     public Instant createdAt() {
         return createdAt;
-    }
-
-    public Instant updatedAt() {
-        return updatedAt;
     }
 
     @Override

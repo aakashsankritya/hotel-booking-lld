@@ -56,27 +56,9 @@ class DateRangeTest {
     }
 
     @Test
-    void rangesThatOnlyTouchDoNotOverlap() {
-        assertThat(range(1, 5).overlaps(range(5, 8))).isFalse();
-        assertThat(range(5, 8).overlaps(range(1, 5))).isFalse();
-    }
-
-    @Test
-    void partiallyOverlappingRangesOverlap() {
-        assertThat(range(1, 5).overlaps(range(4, 6))).isTrue();
-        assertThat(range(4, 6).overlaps(range(1, 5))).isTrue();
-    }
-
-    @Test
-    void nestedAndIdenticalRangesOverlap() {
-        assertThat(range(1, 10).overlaps(range(3, 5))).isTrue();
-        assertThat(range(3, 5).overlaps(range(1, 10))).isTrue();
-        assertThat(range(3, 5).overlaps(range(3, 5))).isTrue();
-    }
-
-    @Test
-    void disjointRangesDoNotOverlap() {
-        assertThat(range(1, 3).overlaps(range(10, 12))).isFalse();
+    void rangesThatOnlyTouchShareNoNight() {
+        assertThat(range(1, 5).dates()).doesNotContainAnyElementsOf(range(5, 8).dates());
+        assertThat(range(5, 8).dates()).doesNotContainAnyElementsOf(range(1, 5).dates());
     }
 
     @Test

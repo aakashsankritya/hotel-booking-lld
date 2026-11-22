@@ -91,7 +91,7 @@ class MoneyTest {
 
     @Test
     void zeroAndComparison() {
-        assertThat(Money.zero(INR).isZero()).isTrue();
+        assertThat(Money.of("0", "INR").isZero()).isTrue();
         assertThat(Money.of("0.01", "INR").isZero()).isFalse();
         assertThat(Money.of("2", "INR").isGreaterThan(Money.of("1.99", "INR"))).isTrue();
         assertThat(Money.of("2", "INR").isGreaterThan(Money.of("2.00", "INR"))).isFalse();

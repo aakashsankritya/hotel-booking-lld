@@ -43,7 +43,7 @@ class PriceRangeTest {
     void openMinMeansNoLowerLimit() {
         PriceRange range = new PriceRange(null, inr("5000"));
 
-        assertThat(range.contains(Money.zero(inr("0").currency()))).isTrue();
+        assertThat(range.contains(inr("0"))).isTrue();
         assertThat(range.contains(inr("5000.01"))).isFalse();
     }
 
