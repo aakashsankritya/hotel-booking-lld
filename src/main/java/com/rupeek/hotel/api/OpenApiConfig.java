@@ -14,6 +14,6 @@ class OpenApiConfig {
         return new OpenAPI().info(new Info()
                 .title("Hotel Booking API")
                 .version("1.0")
-                .description("Property onboarding, search, booking with a 10-minute hold, payment and cancellation."));
+                .description("Property onboarding, search, booking with a time-limited hold, payment and cancellation."));
     }
 }

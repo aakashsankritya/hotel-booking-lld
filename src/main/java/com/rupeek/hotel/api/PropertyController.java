@@ -9,6 +9,7 @@ import com.rupeek.hotel.domain.search.PropertySearch;
 import com.rupeek.hotel.domain.value.OwnerId;
 import jakarta.validation.Valid;
 import java.util.List;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -36,7 +37,7 @@ public class PropertyController {
     }
 
     @GetMapping("/properties/search")
-    public List<SearchResultResponse> search(@Valid @ModelAttribute SearchRequest request) {
+    public List<SearchResultResponse> search(@Valid @ParameterObject @ModelAttribute SearchRequest request) {
         return search.search(request.toCriteria()).stream().map(SearchResultResponse::from).toList();
     }
 }

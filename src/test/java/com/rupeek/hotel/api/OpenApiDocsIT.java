@@ -24,6 +24,7 @@ class OpenApiDocsIT {
         assertThat(result).hasStatusOk();
 
         String body = result.getResponse().getContentAsString(StandardCharsets.UTF_8);
-        assertThat(body).contains("Hotel Booking API", "/bookings", "/owners/{id}", "/properties/search", "Idempotency-Key");
+        assertThat(body).contains("Hotel Booking API", "/bookings", "/owners/{id}", "/properties/search", "Idempotency-Key",
+                "\"name\":\"city\"", "\"201\""); // search params expanded; create endpoints documented as 201
     }
 }

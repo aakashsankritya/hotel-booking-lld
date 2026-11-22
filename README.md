@@ -1,7 +1,4 @@
 # Hotel Booking System
-
-Rupeek SDE-3 machine coding round (Question A).
-
 ## Requirements
 - Java 25
 - No local Gradle needed (Gradle wrapper 9.9.2 included)
@@ -40,7 +37,7 @@ The service starts on `http://localhost:8080`.
 | `POST /bookings/{id}/payments` | 200 | Header `Idempotency-Key` is required. |
 | `POST /bookings/{id}/cancel` | 200 | Returns the booking and the refund. `refund.status` is `SUCCEEDED`, `FAILED` (see `failureReason`) or `NOT_APPLICABLE` (0% refund, or the booking was not paid). |
 
-API docs: Swagger UI is at `/swagger-ui.html` and the OpenAPI JSON is at `/v3/api-docs` (springdoc, no annotations needed; it reads the controllers and request/response records).
+API docs: Swagger UI is at `/swagger-ui.html` and the OpenAPI JSON is at `/v3/api-docs` (springdoc reads the controllers and request/response records; the only doc annotations are `@ParameterObject` on the search query and `@ResponseStatus(CREATED)` on the create endpoints). springdoc lists every error status on every endpoint; the REST API table above is the source for which errors an endpoint really returns.
 
 API rules:
 
