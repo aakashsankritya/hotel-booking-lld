@@ -116,6 +116,35 @@ class PropertySearchTest {
     }
 
     @Test
+    void propertyIsDroppedWhenNoSingleRoomPassesAllFilters() {
+        // Cheap room: right price, but sold out. Pricey room: free, but above the price limit.
+        RoomType cheapSoldOut = RoomType.create("Cheap", 2, 1, Money.of("1500", "INR"));
+        RoomType priceyFree = RoomType.create("Pricey", 2, 1, Money.of("5000", "INR"));
+        Property split = Property.onboard(OwnerId.newId(), "Split Inn", new Location("Goa", "Baga"),
+                new StarRating(3), Set.of(), CancellationPolicyType.FLEXIBLE, List.of(cheapSoldOut, priceyFree));
+        InMemoryPropertyRepository repository = new InMemoryPropertyRepository();
+        repository.save(split);
+        for (var date : STAY.dates()) {
+            inventories.getOrOpen(new InventoryKey(cheapSoldOut.id(), date), 1).hold(1);
+        }
+        SearchCriteria criteria = goa(2, new PriceRange(null, Money.of("2000", "INR")), null, null);
+
+        PropertySearch priceOnly = new PropertySearch(repository, List.of(new PriceFilter()), new NightlyPricingStrategy());
+        PropertySearch availabilityOnly = new PropertySearch(repository,
+                List.of(new AvailabilityFilter(inventories)), new NightlyPricingStrategy());
+        PropertySearch both = new PropertySearch(repository,
+                List.of(new PriceFilter(), new AvailabilityFilter(inventories)), new NightlyPricingStrategy());
+
+        // Each filter alone still leaves one room, so the property would be returned ...
+        assertThat(priceOnly.search(criteria)).singleElement()
+                .satisfies(r -> assertThat(r.offers()).extracting(o -> o.roomType().name()).containsExactly("Cheap"));
+        assertThat(availabilityOnly.search(criteria)).singleElement()
+                .satisfies(r -> assertThat(r.offers()).extracting(o -> o.roomType().name()).containsExactly("Pricey"));
+        // ... but no room passes both, so the property must not be returned.
+        assertThat(both.search(criteria)).isEmpty();
+    }
+
+    @Test
     void localityNarrowsTheSearch() {
         SearchCriteria criteria = new SearchCriteria("Goa", "Calangute", STAY, new GuestCount(2), null, null, null);
 

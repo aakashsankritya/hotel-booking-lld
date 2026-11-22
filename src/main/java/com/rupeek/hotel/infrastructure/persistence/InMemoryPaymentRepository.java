@@ -13,6 +13,7 @@ import org.springframework.stereotype.Repository;
 public class InMemoryPaymentRepository implements PaymentRepository {
 
     private final Map<PaymentId, Payment> store = new ConcurrentHashMap<>();
+    private final Map<IdempotencyKey, Payment> byKey = new ConcurrentHashMap<>();
 
     @Override
     public void save(Payment payment) {
@@ -20,7 +21,17 @@ public class InMemoryPaymentRepository implements PaymentRepository {
     }
 
     @Override
+    public Optional<Payment> saveIfAbsent(Payment payment) {
+        Payment existing = byKey.putIfAbsent(payment.idempotencyKey(), payment); // atomic: one winner per key
+        if (existing != null) {
+            return Optional.of(existing);
+        }
+        store.put(payment.id(), payment);
+        return Optional.empty();
+    }
+
+    @Override
     public Optional<Payment> findByIdempotencyKey(IdempotencyKey key) {
-        return store.values().stream().filter(payment -> payment.idempotencyKey().equals(key)).findFirst();
+        return Optional.ofNullable(byKey.get(key));
     }
 }

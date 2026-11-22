@@ -11,6 +11,7 @@ import java.util.Objects;
  * Keeps a room type only if at least one unit is free on every night of the stay.
  * A night with no inventory record has no bookings yet, so all units are free.
  * Search only reads. It never opens an inventory.
+ * Snapshot read, no lock; the binding check happens at booking time.
  */
 public final class AvailabilityFilter implements SearchFilter {
 

@@ -4,6 +4,10 @@ import com.rupeek.hotel.domain.search.SearchCandidate;
 import com.rupeek.hotel.domain.search.SearchCriteria;
 import com.rupeek.hotel.domain.search.SearchFilter;
 
+/**
+ * The repository already narrows by city. The filter checks the city again on purpose,
+ * so it stays correct when used alone.
+ */
 public final class LocationFilter implements SearchFilter {
 
     @Override
